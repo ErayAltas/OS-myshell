@@ -8,6 +8,8 @@
 
 int main(int argc, char *argv[])
 {
+    int forkVal, execVal;
+
     // if clear called with execx, it executes clear number of times
     if (strcmp(argv[3], "clear") == 0)
     {
@@ -24,26 +26,21 @@ int main(int argc, char *argv[])
     // if cat called with execx, it executes cat number of times
     else if (strcmp(argv[3], "cat") == 0)
     {
-        for (int i = 0; i < argc; i++)
-        {
-            printf("%s\n", argv[i]);
-        }
 
         for (int i = 0; i < atoi(argv[2]); i++)
         {
-            int f = fork();
-            int status;
-            if (f == 0)
+            forkVal = fork();
+            if (forkVal == 0)
             {
                 // calls the cat command
-                status = execve("/bin/cat", argv, NULL);
+                execVal = execve("/bin/cat", argv, NULL);
                 exit(0);
                 perror("exec failed");
             }
             else
             {
                 // Waits until the child process has finished
-                wait(&status);
+                wait(&execVal);
             }
         }
     }
@@ -69,17 +66,16 @@ int main(int argc, char *argv[])
 
         for (int i = 0; i < atoi(argv[2]); i++)
         {
-            int f, j;
-            f = fork();
-            if (f == 0)
+            forkVal = fork();
+            if (forkVal == 0)
             {
-                j = execve("writef", argv, NULL);
+                execVal = execve("writef", argv, NULL);
                 exit(0);
                 perror("exec failed");
             }
             else
             {
-                wait(&j);
+                wait(&execVal);
             }
         }
     }
