@@ -2,14 +2,12 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <unistd.h>
+#include <sys/wait.h>
 
 int main(int argc, char *argv[])
 {
-    printf("argc : %d\n", argc);
-    for (int i = 0; i < argc; i++)
-    {
-        printf("%s\n", argv[i]);
-    }
+    
     int times = 0;
     char *fileName;
 
@@ -55,7 +53,7 @@ int main(int argc, char *argv[])
         {
             // print input and system hour,pid,ppid
             fprintf(fptr, "%s\n", buf);
-            fprintf(fptr, "System time : %s | pid : %d | ppid : %d\n\n", asctime(timeinfo), pidValue, ppidValue);
+            fprintf(fptr, "System time :%spid : %d ppid : %d\n\n", asctime(timeinfo), pidValue, ppidValue);
 
             fclose(fptr);
             return 0;
@@ -63,7 +61,7 @@ int main(int argc, char *argv[])
         // if file doesnt exists
         // print input and system hour,pid,ppid
         fprintf(fptr, "%s\n", buf);
-        fprintf(fptr, "System time : %s | pid : %d | ppid : %d\n\n", asctime(timeinfo), pidValue, ppidValue);
+        fprintf(fptr, "System time :%spid : %d ppid : %d\n\n", asctime(timeinfo), pidValue, ppidValue);
 
         fclose(fptr);
         free(buf);

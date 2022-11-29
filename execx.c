@@ -66,17 +66,21 @@ int main(int argc, char *argv[])
     // if writef called with execx, it executes writef number of times
     else if (strcmp(argv[3], "writef") == 0 && !strcmp(argv[4], "-f") && argv[5] != NULL && argc == 6)
     {
-        int f, j;
-        f = fork();
-        if (f == 0)
+
+        for (int i = 0; i < atoi(argv[2]); i++)
         {
-            j = execve("writef", argv, NULL);
-            exit(0);
-            perror("exec failed");
-        }
-        else
-        {
-            wait(&j);
+            int f, j;
+            f = fork();
+            if (f == 0)
+            {
+                j = execve("writef", argv, NULL);
+                exit(0);
+                perror("exec failed");
+            }
+            else
+            {
+                wait(&j);
+            }
         }
     }
     else
