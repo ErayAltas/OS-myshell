@@ -67,19 +67,16 @@ int main(int argc, char *argv[])
     else if (strcmp(argv[3], "writef") == 0 && !strcmp(argv[4], "-f") && argv[5] != NULL && argc == 6)
     {
         int f, j;
-        for (int i = 0; i < atoi(argv[2]); i++)
+        f = fork();
+        if (f == 0)
         {
-            f = fork();
-            if (f == 0)
-            {
-                j = execve("writef", argv, NULL);
-                exit(0);
-                perror("exec failed");
-            }
-            else
-            {
-                wait(&j);
-            }
+            j = execve("writef", argv, NULL);
+            exit(0);
+            perror("exec failed");
+        }
+        else
+        {
+            wait(&j);
         }
     }
     else

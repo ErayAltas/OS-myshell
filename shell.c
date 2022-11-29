@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
             {
                 command[i] = strtok(NULL, " ");
             }
-
+            
             while (command[command_size] != NULL)
             {
                 // get command size
