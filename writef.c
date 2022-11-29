@@ -3,84 +3,70 @@
 #include <time.h>
 #include <string.h>
 
-// Dosya içine system saatini, pid ve ppid değerini tek satır halinde yazmalıdır.
-
 int main(int argc, char *argv[])
 {
+    printf("argc : %d\n", argc);
+    for (int i = 0; i < argc; i++)
+    {
+        printf("%s\n", argv[i]);
+    }
+    int times = 0;
+    char *fileName;
 
-    int times = atoi(argv[2]);
-    int fileName = atoi(argv[argc - 1]);
+    // if called with execx
+    if (argc == 6)
+    {
+        fileName = argv[5];
+        times = atoi(argv[2]);
+    }
+    // if only writef called
+    else
+    {
+        fileName = argv[2];
+        times = 1;
+    }
 
     while (times > 0)
     {
+        FILE *fptr;
+        char character;
+
+        // get pid and ppid values
+        int pidValue = getpid();
+        int ppidValue = getppid();
+
         size_t n = 10;
-        char *input = malloc(sizeof(char) * n);
-        printf("input: ");
-        getline(&input, &n, stdin);
+        // allocate memory
+        char *buf = malloc(sizeof(char) * n);
+        printf(">");
+        // get input from user
+        getline(&buf, &n, stdin);
 
-        char pid[10];
-        char ppid[10];
-        sprintf(pid, "%d", getpid());
-        sprintf(ppid, "%d", getppid());
-
+        // get time info
         time_t rawtime;
         struct tm *timeinfo;
         time(&rawtime);
         timeinfo = localtime(&rawtime);
 
-        FILE *fptr;
-        char ch;
-        char *totalProcessInfo[100];
-        char *processInfo[6];
-        processInfo[0] = "System time:";
-        processInfo[1] = asctime(timeinfo);
-        processInfo[2] = "Pid:";
-        processInfo[3] = pid;
-        processInfo[4] = " PPid:";
-        processInfo[5] = ppid;
-
-        strcat(totalProcessInfo, processInfo[0]);
-        strcat(totalProcessInfo, processInfo[1]);
-        strcat(totalProcessInfo, processInfo[2]);
-        strcat(totalProcessInfo, processInfo[3]);
-        strcat(totalProcessInfo, processInfo[4]);
-        strcat(totalProcessInfo, processInfo[5]);
-        strcat(totalProcessInfo, "\n");
-
         fptr = fopen(fileName, "a");
 
+        // if file exists
         if (fptr != NULL)
         {
-            fprintf(fptr, "%s\n", input);
-            fprintf(fptr, "%s\n", totalProcessInfo);
-            fclose(fptr);
-
-            fptr = fopen(fileName, "r");
-            while ((ch = fgetc(fptr)) != EOF)
-            {
-                printf("%c", ch);
-            }
+            // print input and system hour,pid,ppid
+            fprintf(fptr, "%s\n", buf);
+            fprintf(fptr, "System time : %s | pid : %d | ppid : %d\n\n", asctime(timeinfo), pidValue, ppidValue);
 
             fclose(fptr);
             return 0;
         }
+        // if file doesnt exists
+        // print input and system hour,pid,ppid
+        fprintf(fptr, "%s\n", buf);
+        fprintf(fptr, "System time : %s | pid : %d | ppid : %d\n\n", asctime(timeinfo), pidValue, ppidValue);
 
-        fprintf(fptr, "%s\n", input);
-        fprintf(fptr, "%s\n", totalProcessInfo);
         fclose(fptr);
-
-        //read
-        fptr = fopen(fileName, "r");
-        while ((ch = fgetc(fptr)) != EOF)
-        {
-            printf("%c", ch);
-        }
-
-        //free up
-        fclose(fptr);
-        free(totalProcessInfo);
-        free(processInfo);
-        free(input);
+        free(buf);
         times--;
     }
 
