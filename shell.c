@@ -35,7 +35,8 @@ int main(int argc, char *argv[])
 
         // get input from user
         gets(input);
-
+        
+        // tokenize input to get commands
         command[0] = strtok(input, " ");
 
         for (int m = 1; m < k; m++)
@@ -51,20 +52,6 @@ int main(int argc, char *argv[])
         // if bash called, execute local bash
         if (!strcmp(command[0], "bash"))
         {
-            // char *newArgv[1];
-            // newArgv[0] = "bash";
-
-            // forkVal = fork();
-            // if (forkVal == 0)
-            // {
-            //     execVal = execve("/bin/bash", newArgv, NULL);
-            //     perror("exec error");
-            // }
-            // else
-            // {
-            //     wait(&execVal);
-            // }
-
             system("/bin/bash");
         }
         // if writef called, open file and write into file
