@@ -51,21 +51,21 @@ int main(int argc, char *argv[])
         // if bash called, execute local bash
         if (!strcmp(command[0], "bash"))
         {
-            char *newArgv[1];
-            newArgv[0] = "bash";
+            // char *newArgv[1];
+            // newArgv[0] = "bash";
 
-            forkVal = fork();
-            if (forkVal == 0)
-            {
-                execVal = execve("/bin/bash", newArgv, NULL);
-                perror("exec error");
-            }
-            else
-            {
-                wait(&execVal);
-            }
+            // forkVal = fork();
+            // if (forkVal == 0)
+            // {
+            //     execVal = execve("/bin/bash", newArgv, NULL);
+            //     perror("exec error");
+            // }
+            // else
+            // {
+            //     wait(&execVal);
+            // }
 
-            /* system("/bin/bash"); */
+            system("/bin/bash");
         }
         // if writef called, open file and write into file
         else if (!strcmp(command[0], "writef") && !strcmp(command[1], "-f") && command[2] != NULL && command_size == 3)
@@ -140,7 +140,6 @@ int main(int argc, char *argv[])
             printf("bash -- call local bash\n");
             printf("exit -- exit program\n\n");
             printf("--------------------\n");
-
         }
         // if exit called, exit program
         else if (strcmp(command[0], "exit") == 0)

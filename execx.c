@@ -24,18 +24,25 @@ int main(int argc, char *argv[])
         }
     }
     // if cat called with execx, it executes cat number of times
-    else if (strcmp(argv[3], "cat") == 0)
+    else if (strcmp(argv[3], "cat") == 0 && argv[4] != NULL)
     {
 
         for (int i = 0; i < atoi(argv[2]); i++)
         {
+
+            char *newArgv[3];
+            newArgv[0] = "cat";
+            newArgv[1] = argv[4];
+            newArgv[2] = NULL;
+
             forkVal = fork();
+
             if (forkVal == 0)
             {
                 // calls the cat command
-                execVal = execve("/bin/cat", argv, NULL);
+                execVal = execve("/bin/cat", newArgv, NULL);
                 exit(0);
-                perror("exec failed");
+                perror("exec error");
             }
             else
             {
@@ -71,7 +78,7 @@ int main(int argc, char *argv[])
             {
                 execVal = execve("writef", argv, NULL);
                 exit(0);
-                perror("exec failed");
+                perror("exec error");
             }
             else
             {
