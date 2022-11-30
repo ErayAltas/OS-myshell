@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[])
 {
-    
+
     int times = 0;
     char *fileName;
 
@@ -28,6 +28,7 @@ int main(int argc, char *argv[])
     {
         FILE *fptr;
         char character;
+        char *systemTime;
 
         // get pid and ppid values
         int pidValue = getpid();
@@ -45,6 +46,8 @@ int main(int argc, char *argv[])
         struct tm *timeinfo;
         time(&rawtime);
         timeinfo = localtime(&rawtime);
+        systemTime = asctime(timeinfo);
+        systemTime[strlen(systemTime) - 1] = 0;
 
         fptr = fopen(fileName, "a");
 
@@ -53,7 +56,7 @@ int main(int argc, char *argv[])
         {
             // print input and system hour,pid,ppid
             fprintf(fptr, "%s\n", buf);
-            fprintf(fptr, "System time :%spid : %d ppid : %d\n\n", asctime(timeinfo), pidValue, ppidValue);
+            fprintf(fptr, "System time : %s pid : %d ppid : %d\n\n", systemTime, pidValue, ppidValue);
 
             fclose(fptr);
             return 0;
@@ -61,7 +64,7 @@ int main(int argc, char *argv[])
         // if file doesnt exists
         // print input and system hour,pid,ppid
         fprintf(fptr, "%s\n", buf);
-        fprintf(fptr, "System time :%spid : %d ppid : %d\n\n", asctime(timeinfo), pidValue, ppidValue);
+        fprintf(fptr, "System time : %spid : %d ppid : %d\n\n", systemTime, pidValue, ppidValue);
 
         fclose(fptr);
         free(buf);
